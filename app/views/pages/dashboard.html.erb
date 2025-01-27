@@ -1,0 +1,17 @@
+<h1 class="text-2xl font-bold mb-4">refresh your lines 🎭</h1>
+
+<% if @pieces.any? %>
+  <ul class="list-disc pl-5">
+    <% @pieces.each do |piece| %>
+      <li class="mb-2">
+        <%= link_to piece.title, piece_path(piece), class: "text-blue-500 hover:underline" %>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>You haven't created any pieces yet.</p>
+<% end %>
+
+<div class="mt-6">
+  <%= link_to "Create New Piece", new_piece_path, class: "bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" %>
+</div>

@@ -1,0 +1,9 @@
+<h2><%= @piece.title %></h2>
+<div class="lines">
+  <% @lines.each do |line| %>
+    <div class="line">
+      <strong><%= line.character.name %>:</strong>
+      <p><%= line.text %></p>
+    </div>
+  <% end %>
+</div>

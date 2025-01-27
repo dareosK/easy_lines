@@ -10,5 +10,6 @@ class PagesController < ApplicationController
   end
 
   def dashboard
+    @pieces = current_user.pieces
   end
 end

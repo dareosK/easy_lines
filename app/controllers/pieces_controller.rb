@@ -6,6 +6,8 @@ class PiecesController < ApplicationController
   end
 
   def show
+    @characters = @piece.characters
+    @lines = @piece.lines.order(:order)
   end
 
   def new

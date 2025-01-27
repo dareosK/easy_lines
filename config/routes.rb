@@ -17,5 +17,5 @@ Rails.application.routes.draw do
 
   # For simulating scenes
   get "pieces/:id/simulate", to: "pieces#simulate", as: :simulate_piece
-  get "dashboard", to: "pages#dashboard"
+  get "dashboard", to: "pages#dashboard", as: :dashboard
 end
