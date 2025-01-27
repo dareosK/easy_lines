@@ -1,0 +1,18 @@
+<h2><%= @piece.title %></h2>
+<div
+  data-controller="blacken-lines"
+  data-blacken-lines-character-name-value="<%= @piece.role.downcase %>"
+  class="lines"
+>
+  <% @lines.each do |line| %>
+    <div
+      class="line"
+      data-blacken-lines-target="line"
+      data-character="<%= line.character.name.downcase %>"
+      data-action="click->blacken-lines#toggle"
+    >
+      <strong><%= line.character.name.downcase %>:</strong>
+      <p><%= line.text %></p>
+    </div>
+  <% end %>
+</div>

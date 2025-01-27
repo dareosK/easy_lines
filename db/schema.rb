@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_01_27_201906) do
+ActiveRecord::Schema[7.1].define(version: 2025_01_27_205604) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -42,6 +42,50 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_27_201906) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "audio_files", force: :cascade do |t|
+    t.bigint "line_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["line_id"], name: "index_audio_files_on_line_id"
+  end
+
+  create_table "characters", force: :cascade do |t|
+    t.bigint "piece_id", null: false
+    t.string "name"
+    t.string "voice"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["piece_id"], name: "index_characters_on_piece_id"
+  end
+
+  create_table "lines", force: :cascade do |t|
+    t.bigint "character_id", null: false
+    t.bigint "piece_image_id", null: false
+    t.text "text"
+    t.integer "order"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["character_id"], name: "index_lines_on_character_id"
+    t.index ["piece_image_id"], name: "index_lines_on_piece_image_id"
+  end
+
+  create_table "piece_images", force: :cascade do |t|
+    t.bigint "piece_id", null: false
+    t.integer "order"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["piece_id"], name: "index_piece_images_on_piece_id"
+  end
+
+  create_table "pieces", force: :cascade do |t|
+    t.string "title"
+    t.string "role"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_pieces_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -56,4 +100,10 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_27_201906) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "audio_files", "lines"
+  add_foreign_key "characters", "pieces"
+  add_foreign_key "lines", "characters"
+  add_foreign_key "lines", "piece_images"
+  add_foreign_key "piece_images", "pieces"
+  add_foreign_key "pieces", "users"
 end
