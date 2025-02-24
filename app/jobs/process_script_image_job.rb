@@ -53,15 +53,39 @@ class ProcessScriptImageJob < ApplicationJob
     script_data = {"lines" => []}
 
     puts "creating characters"
-    ocr_result.each_line.with_index do |line, index|
-      character, text = line.split(":", 2)
-      next if text.nil?
+    previous_character = nil
+    previous_text = nil
 
-      script_data["lines"] << {
-        "character" => character.strip,
-        "text" => text.strip,
-        "order" => index + 1
-      }
+    ocr_result.each_line.with_index do |line, index|
+      line.strip!
+
+      # Skip empty lines
+      next if line.empty?
+
+      # Split the line by the first colon
+      character, text = line.split(":", 2)
+
+      if text.nil?
+        # If no colon is found, this is part of the previous character's dialogue
+        if previous_character
+          previous_text += " " + line.strip
+          script_data["lines"].last["text"] = previous_text
+          next
+        else
+          # If there's no previous character, skip this line (malformed or unexpected case)
+          next
+        end
+      else
+        # A new character is found
+        previous_character = character.strip
+        previous_text = text.strip
+
+        script_data["lines"] << {
+          "character" => previous_character,
+          "text" => previous_text,
+          "order" => index + 1
+        }
+      end
     end
 
     script_data

@@ -11,7 +11,7 @@ export default class extends Controller {
     console.log(this.characterNameValue)
     // Black out all lines for the specified character on page load
     this.lineTargets.forEach((line) => {
-      if (line.dataset.character === this.characterNameValue) {
+      if (line.dataset.character.toLowerCase() === this.characterNameValue) {
         line.classList.add("blacked-out");
       }
     });

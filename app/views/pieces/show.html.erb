@@ -10,12 +10,22 @@
     <% end %>
   </div>
 
-  <div class="characters-and-lines">
-    <% @lines.each do |line| %>
-      <div class="line">
-        <h2 class="character-name"><%= line.character.name %></h2>
-        <p class="line-text"><%= line.text %></p>
-      </div>
-    <% end %>
+  <div
+  data-controller="blacken-lines"
+  data-blacken-lines-character-name-value="<%= @piece.role.downcase %>"
+  class="lines"
+>
+    <div class="characters-and-lines">
+      <% @lines.each do |line| %>
+        <div class="line"
+            data-blacken-lines-target="line"
+            data-character="<%= line.character.name.downcase %>"
+            data-action="click->blacken-lines#toggle"
+        >
+          <h2 class="character-name"><%= line.character.name %></h2>
+          <p class="line-text"><%= line.text %></p>
+        </div>
+      <% end %>
+    </div>
   </div>
 </div>
