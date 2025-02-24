@@ -1,2 +1,21 @@
-<h2><%= @piece.title %></h2>
-<%= image_tag @piece.piece_images.first.image.file if @piece.piece_images.first&.image&.file.attached? %>
+<div class="piece-container">
+  <h1 class="piece-title"><%= @piece.title %></h1>
+
+  <!-- Show images associated with the piece -->
+  <div class="piece-images">
+    <% @piece.piece_images.each do |piece_image| %>
+      <div class="piece-image">
+        <%= image_tag piece_image.image.file if piece_image&.image&.file.attached? %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="characters-and-lines">
+    <% @lines.each do |line| %>
+      <div class="line">
+        <h2 class="character-name"><%= line.character.name %></h2>
+        <p class="line-text"><%= line.text %></p>
+      </div>
+    <% end %>
+  </div>
+</div>

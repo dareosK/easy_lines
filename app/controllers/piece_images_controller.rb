@@ -3,29 +3,16 @@ class PieceImagesController < ApplicationController
 
   # POST /pieces/:piece_id/piece_images
   def create
-    # RETHINK THIS
-    # raise
-    # image_file = params[:image]
+    @piece = Piece.find(params[:piece_id])
+    @image = Image.create!(image_params)
+    @image.file.attach(params[:image_file])
 
-    # if image_file.present?
-    #   # Create the image and generate the checksum
-    #   image = Image.create(
-    #     filename: image_file.original_filename,
-    #     content_type: image_file.content_type,
-    #     byte_size: image_file.size,
-    #     checksum: Digest::MD5.hexdigest(image_file.tempfile.read)
-    #   )
+    @piece_image = PieceImage.create!(piece: @piece, image: @image, order: @piece.piece_images.count + 1)
 
-    #   # Attach the image file to the Image model
-    #   image.file.attach(image_file)
+    # Enqueue background job for processing image with OpenAI
+    ProcessScriptImageJob.perform_later(@piece_image.id)
 
-    #   # Create the PieceImage association
-    #   @piece.piece_images.create(image: image)
-
-    #   redirect_to @piece, notice: "Image successfully added."
-    # else
-    #   redirect_to @piece, alert: "No image file uploaded."
-    # end
+    redirect_to @piece
   end
 
   # DELETE /pieces/:piece_id/piece_images/:id
@@ -39,8 +26,12 @@ class PieceImagesController < ApplicationController
   end
 
   private
+    def set_piece
+      @piece = Piece.find(params[:piece_id])
+    end
 
-  def set_piece
-    @piece = Piece.find(params[:piece_id])
+    def image_params
+      params.require(:image).permit(:filename, :content_type, :byte_size)
+    end
   end
 end

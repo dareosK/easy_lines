@@ -16,3 +16,7 @@
     </div>
   <% end %>
 </div>
+
+
+<h2><%= @piece.title %></h2>
+<%= image_tag @piece.piece_images.first.image.file if @piece.piece_images.first&.image&.file.attached? %>
