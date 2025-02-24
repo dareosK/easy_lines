@@ -1,0 +1,19 @@
+<div class="new-piece-form">
+  <h1>What are we learning today?</h1>
+
+  <%= simple_form_for @piece, html: { class: "form" } do |f| %>
+    <%= f.input :title, label: "Script Title", placeholder: "Enter the title of the script" %>
+    <%= f.input :role, label: "Your Role", placeholder: "Enter the role you are playing" %>
+
+    <div class="form-group">
+      <%= f.label :images, "Upload Script Images" %>
+      <%= f.file_field :images, multiple: true, class: "form-control" %>
+      <small class="form-text text-muted">You can upload multiple images.</small>
+    </div>
+
+    <div class="form-actions">
+      <%= f.button :submit, "Create Script", class: "btn btn-primary" %>
+      <%= link_to "Cancel", dashboard_path, class: "btn btn-light" %>
+    </div>
+  <% end %>
+</div>
