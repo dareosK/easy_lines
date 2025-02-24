@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_01_27_205604) do
+ActiveRecord::Schema[7.1].define(version: 2025_02_24_141832) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -58,6 +58,15 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_27_205604) do
     t.index ["piece_id"], name: "index_characters_on_piece_id"
   end
 
+  create_table "images", force: :cascade do |t|
+    t.string "filename"
+    t.string "content_type"
+    t.integer "byte_size"
+    t.string "checksum"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "lines", force: :cascade do |t|
     t.bigint "character_id", null: false
     t.bigint "piece_image_id", null: false
@@ -74,6 +83,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_27_205604) do
     t.integer "order"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "image_id", null: false
+    t.index ["image_id"], name: "index_piece_images_on_image_id"
     t.index ["piece_id"], name: "index_piece_images_on_piece_id"
   end
 
@@ -104,6 +115,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_27_205604) do
   add_foreign_key "characters", "pieces"
   add_foreign_key "lines", "characters"
   add_foreign_key "lines", "piece_images"
+  add_foreign_key "piece_images", "images"
   add_foreign_key "piece_images", "pieces"
   add_foreign_key "pieces", "users"
 end
