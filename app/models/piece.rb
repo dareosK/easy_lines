@@ -1,8 +1,8 @@
 class Piece < ApplicationRecord
-  has_many :piece_images
-  has_many :piece_lines
+  has_many :piece_images, dependent: :destroy
+  has_many :piece_lines, dependent: :destroy
   has_many :images, through: :piece_images
-  has_many :characters
+  has_many :characters, dependent: :destroy
   has_many :lines, through: :piece_lines
 
   belongs_to :user
