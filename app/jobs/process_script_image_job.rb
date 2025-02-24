@@ -32,8 +32,6 @@ class ProcessScriptImageJob < ApplicationJob
       # Use RTesseract with the tempfile path (not the Tempfile object itself)
       ocr_result = RTesseract.new(tempfile_path).to_s
       puts "OCR Result: #{ocr_result}"
-
-      # Process the OCR result
       parse_ocr_result(ocr_result)
     rescue OpenURI::HTTPError => e
       puts "🚨 Error downloading image: #{e.message}"

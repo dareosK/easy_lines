@@ -2,7 +2,7 @@ require 'openai'
 
 class OpenAiService
   def initialize
-    @client = OpenAI::Client.new(access_token: ENV['OPENAI_API_KEY'])
+    @client = OpenAI::Client.new(access_token: ENV['OPENAI_API_ACCESS_KEY'])
   end
 
   def extract_text_from_image(image_url)
